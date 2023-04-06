@@ -33,7 +33,7 @@ function AdminPanel() {
         dispatch(clearAllUsers())
     }
 
-    
+
 
     useEffect(() => {
         addUserFun()
