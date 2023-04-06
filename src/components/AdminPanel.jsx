@@ -7,10 +7,11 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Button, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import Chance from 'chance';
-import { addUser, clearAllUsers, removeUser } from '../store/slices/userSlice';
+import { addAdminData } from '../store/slices/adminSlice';
+import { useEffect } from 'react';
+import { clearAllUsers } from '../store/slices/userSlice';
 
-export default function DataPage() {
+function AdminPanel() {
     let chance = Chance()
     const dispatch = useDispatch()
 
@@ -25,31 +26,30 @@ export default function DataPage() {
     //   ---functions---
     //add user
     const addUserFun = () => {
-        let userCreate = `${chance.first()} ${chance.last()}`;
-        dispatch(addUser(userCreate))
+        dispatch(addAdminData())
     }
-
-    // delete user
-    const deleteUser = (e) => {
-        dispatch(removeUser(e))
-    }
-
-    //clearAllUsers
-    const clearAll_Users = () => {
+    // clear all admin data
+    const clearAllData = () => {
         dispatch(clearAllUsers())
     }
 
+    
+
+    useEffect(() => {
+        addUserFun()
+    }, [])
+
 
     // --access store data--
-    const storeData = useSelector(state => state.users)
+    const storeData = useSelector(state => state.admin)
     console.log(storeData)
 
     return (
-        <React.Fragment>
+        <>
             <Container maxWidth="lg">
-                <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', mt: 2, p: 2 }} >
+                <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', mt: 2, p: 2, overflow: "auto" }} >
                     <marquee direction="right">  <Typography sx={{ fontSize: "2rem", }}> Redux Toolkit </Typography> </marquee>
-                    <Button onClick={addUserFun}>Add Item</Button>
+                    {/* <Button onClick={addUserFun}>Add Item</Button> */}
                     <Grid container spacing={2}>
                         {/* --data-- */}
                         {storeData && storeData.map((e) => {
@@ -70,9 +70,11 @@ export default function DataPage() {
 
                         {/* --//data-- */}
                     </Grid>
-                    <Button onClick={() => clearAll_Users()}>Clear All Item</Button>
+                    <Button onClick={() => clearAllData()}>Clear All Item</Button>
                 </Box>
             </Container>
-        </React.Fragment>
-    );
+        </>
+    )
 }
+
+export default AdminPanel

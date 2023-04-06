@@ -16,8 +16,13 @@ const usersSlice = createSlice({
         // clear user
         clearAllUsers(state, action) {
             return []
-        } 
-    }
+        }
+    },
+    extraReducers: ((builder) => {
+        builder.addCase(usersSlice.actions.clearAllUsers, () => {
+            return []
+        })
+    })
 })
 
 export default usersSlice;
